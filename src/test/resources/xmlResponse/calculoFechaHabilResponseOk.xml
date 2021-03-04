@@ -1,0 +1,6 @@
+<cuerpo>
+    <opc1:fechaIngreso xmlns:opc1="http://osb.bancochile.cl/ESB/CalculoFechaHabil/OpCalculoFechaHabilResponse">20161216</opc1:fechaIngreso>
+    <opc1:fechaSalida xmlns:opc1="http://osb.bancochile.cl/ESB/CalculoFechaHabil/OpCalculoFechaHabilResponse">20161221</opc1:fechaSalida>
+    <opc1:codError xmlns:opc1="http://osb.bancochile.cl/ESB/CalculoFechaHabil/OpCalculoFechaHabilResponse">00</opc1:codError>
+    <opc1:descError xmlns:opc1="http://osb.bancochile.cl/ESB/CalculoFechaHabil/OpCalculoFechaHabilResponse"/>
+</cuerpo>

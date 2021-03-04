@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- Spring Context de Clientes WS Bancochile -->
+    <beans:import resource="classpath*:ws-proxy-context.xml" />
+
+    <util:map id="commonRecaudacionCustomProperties">
+        <beans:entry key="com.sun.xml.ws.request.timeout">
+            <beans:value type="java.lang.Integer">#{endpointProperties['recaudacion.empresa.timeout.request']}</beans:value>
+        </beans:entry>
+        <beans:entry key="com.sun.xml.ws.connect.timeout">
+            <beans:value type="java.lang.Integer">#{endpointProperties['recaudacion.empresa.timeout.connect']}</beans:value>
+        </beans:entry>
+    </util:map>
+
+    <!-- Handler de Cabecera Base para Clientes WS -->
+    <beans:bean id="osbHandlerResolver" class="cl.bancochile.ws12.handler4.OsbHandlerResolver">
+        <beans:constructor-arg value="${canal.general}"/>
+        <beans:constructor-arg value="${sucursal}"/>
+    </beans:bean>
+
+
+    <!-- Cliente Fecha Habil -->
+    <beans:bean id="fechaHabilProxy" parent="fechaHabilProxyBaseBean" >
+        <beans:property name="handlerResolver" ref="fechaHabilOsbHandlerResolver" />
+        <beans:property name="endpointAddress" value="#{endpointProperties['CS002028.endpoint']}" />
+        <beans:property name="customProperties" ref="commonRecaudacionCustomProperties" />
+    </beans:bean>
+
+    <beans:bean id="fechaHabilOsbHandlerResolver" class="cl.bancochile.ws.spring.handler.OsbHandlerResolver">
+        <beans:property name="config" ref="fechaHabilOsbHandlerResolverConfig" />
+    </beans:bean>
+
+    <beans:bean id="fechaHabilOsbHandlerResolverConfig" class="cl.bancochile.ws.spring.handler.DefaultConfigOsbHandlerResolver">
+        <beans:property name="idApp" value="RECAU_E" />
+        <beans:property name="canal" value="INTERNET_E" />
+        <beans:property name="sucursal" value="994" />
+        <beans:property name="header" value="http://osb.bancochile.cl/CalculoFechaHabil/" />
+    </beans:bean>
+
+
+    <!-- Cliente Detalle Contrato Convenio -->
+    <beans:bean id="detalleContratoProxy" parent="detalleContratoProxyBaseBean" >
+        <beans:property name="handlerResolver" ref="osbHandlerResolver" />
+        <beans:property name="endpointAddress" value="#{endpointProperties['cobranzaExterna.v1.endpoint']}" />
+        <beans:property name="customProperties" ref="commonRecaudacionCustomProperties" />
+    </beans:bean>
+
+    <beans:bean id="consultaSucursalRecaudacion" parent="consultaSucursalRecaudacionProxyBaseBean" >
+        <beans:property name="handlerResolver" ref="osbHandlerResolver" />
+        <beans:property name="endpointAddress" value="#{endpointProperties['consultaSucursalRecaudacion.v1.endpoint']}" />
+        <beans:property name="customProperties" ref="commonRecaudacionCustomProperties" />
+    </beans:bean>
+
+</beans:beans>

@@ -1,0 +1,5 @@
+<ns1:consultarSucursalRs xmlns:ns1="http://osb.bancochile.cl/bch/neg/recaudaciones/consultaSucursalRecaudacion/consultarSucursalRs/mpi">
+    <ns1:codigoRetorno>00</ns1:codigoRetorno>
+    <ns1:codigoOficina>001</ns1:codigoOficina>
+    <ns1:descripcionOficina>CASA MATRIZ</ns1:descripcionOficina>
+</ns1:consultarSucursalRs>

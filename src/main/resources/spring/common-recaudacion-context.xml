@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <!-- Soporte anotaciones -->
+    <context:annotation-config />
+    <!-- Component-Scan -->
+    <context:component-scan base-package="cl.bancochile.portal.common.recaudacion" />
+    <context:component-scan base-package="cl.bancochile.portal.empresa.recaudacion.persistence" />
+
+    <util:properties id="recaudaProperties" location="classpath:properties/commonRecaudacion.properties"/>
+    <util:properties id="detalleContrato" location="classpath:properties/detalle-contrato.properties"/>
+
+
+    <!-- Clientes WS -->
+    <import resource="classpath:spring/clientes-ws-context.xml"/>
+
+    <!-- Traductor -->
+    <import resource="classpath:spring/traductor-config.xml"/>
+
+
+    <!--Conversion-->
+    <bean id="commonRecaConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.ReqCalcularFechaHabilConverter"/>
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.ResCalcularFechaHabilConverter"/>
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.DetalleContratoReq" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.DetalleContratoRes" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.Sp_re_get_formato_by_idOUTToValidadorFormatoLineas" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.Sp_re_get_list_formatosOUTToFormatos" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.Sp_re_get_formato_by_idOUTToFormatoArchivo" />
+            </set>
+        </property>
+    </bean>
+
+    <bean id="predicateRecaudacionFactory" class="cl.bancochile.portal.common.recaudacion.filters.PredicateFactory"/>
+
+</beans>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+    <!-- Soporte anotaciones -->
+    <context:annotation-config />
+
+    <context:component-scan base-package="cl.bancochile.portal.common.recaudacion" />
+
+    <util:properties id="recaudaProperties" location="classpath:properties/commonRecaudacion.properties"/>
+    <util:properties id="detalleContrato" location="classpath:properties/detalle-contrato.properties"/>
+
+    <!--Conversion-->
+    <bean id="commonRecaConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.ReqCalcularFechaHabilConverter"/>
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.ResCalcularFechaHabilConverter"/>
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.DetalleContratoReq" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.DetalleContratoRes" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.Sp_re_get_formato_by_idOUTToValidadorFormatoLineas" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.Sp_re_get_list_formatosOUTToFormatos" />
+                <bean class="cl.bancochile.portal.common.recaudacion.converter.Sp_re_get_formato_by_idOUTToFormatoArchivo" />
+            </set>
+        </property>
+    </bean>
+
+    <bean id="predicateRecaudacionFactory" class="cl.bancochile.portal.common.recaudacion.filters.PredicateFactory"/>
+
+
+    <!-- Mock DataSources -->
+    <bean id="dataSourceRecaudacionEmpresa" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="javax.sql.DataSource"></constructor-arg>
+    </bean>
+
+    <bean id="dataSource" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="javax.sql.DataSource"></constructor-arg>
+    </bean>
+
+    <bean id="fechaHabilProxy" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="cl.bancochile.osb.calculofechahabil.CalculoFechaHabil"></constructor-arg>
+    </bean>
+
+    <bean id="detalleContratoProxy" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="cl.bancochile.osb.neg.pagos.cobranzaexterna.v._1.CobranzaExternaPort"></constructor-arg>
+    </bean>
+
+    <bean id="sp_re_get_list_formatosService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="cl.bancochile.portal.empresa.recaudacion.persistence.Sp_re_get_list_formatosService"></constructor-arg>
+    </bean>
+
+    <bean id="sp_re_get_formato_by_idService" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="cl.bancochile.portal.empresa.recaudacion.persistence.Sp_re_get_formato_by_idService"></constructor-arg>
+    </bean>
+
+    <bean id="consultaSucursalRecaudacion" class="org.mockito.Mockito" factory-method="mock">
+        <constructor-arg value="cl.bancochile.osb.bch.neg.recaudaciones.consultasucursalrecaudacion.v._1.ConsultaSucursalRecaudacionPort"></constructor-arg>
+    </bean>
+
+</beans>
